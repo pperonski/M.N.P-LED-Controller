@@ -130,7 +130,7 @@ bool WiFiTask::exit_AP()
 
 bool WiFiTask::enter_AP()
 {
-  return WiFi.softAP(ap_name);
+  return WiFi.softAP(ap_name,SECRET_PASSWORD);
 }
 
 bool WiFiTask::connect()

@@ -16,10 +16,10 @@ mode::Mode *createMode()
 typedef mode::Mode *(*ModeCreator)();
 
 const ModeCreator modes_list[] = {
-    createMode<mode::Straps>,
+    // createMode<mode::Straps>,
+    createMode<mode::HTML>,
     createMode<mode::Static>,
     createMode<mode::Pulse>,
-    createMode<mode::HTML>,
     createMode<mode::API>};
 
 extern mode::Mode *current_mode;

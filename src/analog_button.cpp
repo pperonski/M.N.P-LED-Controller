@@ -25,8 +25,8 @@ namespace analogButton
     {
         analog_button_timer = timerBegin(1, 80, true);
         timerAttachInterrupt(analog_button_timer, &onAnalogTimer, true);
-        // fire each 100 ms
-        timerAlarmWrite(analog_button_timer, 100000, true);
+        // fire each 1000 ms
+        timerAlarmWrite(analog_button_timer, 1000000, true);
         timerAlarmEnable(analog_button_timer);
     }
 

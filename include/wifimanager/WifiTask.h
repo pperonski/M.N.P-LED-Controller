@@ -25,6 +25,8 @@
 
 #define MAX_SSID 10 // how much ssid to store in flash
 
+#define SECRET_PASSWORD "ra_xviii_7312"
+
 typedef std::function<void()> SaveCallback;
 
 class WiFiTask
