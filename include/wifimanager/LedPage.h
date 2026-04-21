@@ -1,0 +1,347 @@
+#pragma once
+
+const char ledPageHTML[] = R"rawliteral(
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DJ LED</title>
+    <style>
+
+        *
+        {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body
+        {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        button
+        {
+            border: black solid 2px;
+            background-color: crimson;
+            padding: 10px;
+            font-size: medium;
+        }
+
+        button:hover
+        {
+            background-color: black;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:active
+        {
+            color: black;
+        }
+
+        .duty_slider
+        {
+            appearance: slider-vertical;
+            width: 20%;
+            height: fit-content;
+        }
+
+        .freq_slider
+        {
+            width: fit-content;
+            height: fit-content;
+        }
+
+        main
+        {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            height: fit-content;
+            justify-content: center;
+            gap:10px;
+        }
+
+        .led_control
+        {
+            display: flex;
+            height: fit-content;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding-left: 10px;
+            padding-right: 10px;
+
+            animation-name: blink;
+            animation-duration: 0;
+            animation-iteration-count:infinite;
+            animation-timing-function: step-start;
+        }
+
+        .led_control:hover
+        {
+            background-color: blue;
+            color: white;
+            cursor: pointer;
+        }
+
+        .active
+        {
+            background-color: crimson;
+        }
+
+        .led_control label,p
+        {
+            text-align: center;
+        }
+
+        footer
+        {
+            text-align: center;
+            width: 100%;
+        }
+
+        @keyframes blink
+        {
+            0%{
+                background-color: initial;
+            }
+            50%{
+                background-color: transparent;
+            }
+        }
+
+        @media screen and (max-width:600px) {
+            footer
+            {
+                display: none;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <div>
+        <button onclick="updateAllFreq(0.0)">Static</button>
+        <button onclick="updateAllFreq(0.25)">0.25 Hz</button>
+        <button onclick="updateAllFreq(0.5)">0.5 Hz</button>
+        <button onclick="updateAllFreq(1.0)">1 Hz</button>
+        <button onclick="updateAllFreq(10.0)">10 Hz</button>
+        <button onclick="updateAllFreq(50.0)">50 Hz</button>
+    </div>
+    <main> 
+
+    </main>
+    <footer>
+        Use W and S to change Brightness, use P and L to change Frequency.
+    </footer>
+</body>
+<script>
+
+    const keysFunction={
+        '1':()=>{toggleActive(0)},
+        '2':()=>{toggleActive(1)},
+        '3':()=>{toggleActive(2)},
+        '4':()=>{toggleActive(3)},
+        '5':()=>{toggleActive(4)},
+        '6':()=>{toggleActive(5)},
+        '7':()=>{toggleActive(6)},
+        '8':()=>{toggleActive(7)},
+        '9':()=>{toggleActive(8)},
+        '0':()=>{toggleActive(9)},
+        '!':()=>{toggleActive(10)},
+        '@':()=>{toggleActive(11)},
+        '#':()=>{toggleActive(12)},
+        'w':()=>{updateActiveDuty(0.1)},
+        's':()=>{updateActiveDuty(-0.1)},
+        'p':()=>{updateActiveFreq(0.1)},
+        'l':()=>{updateActiveFreq(-0.1)}
+    };
+
+     function onKeyPress(event)
+    {
+        const key=event.key;
+        console.log("Key pressed! key: "+key);
+
+        if(keysFunction[key])
+        {
+             keysFunction[key]();
+        }
+    }
+
+     function updateActiveDuty(value)
+    {
+        const main=document.getElementsByTagName("main")[0];
+
+        const active=[...main.getElementsByClassName("active")];
+
+         active.forEach( element => {
+            const id=Number.parseInt(element.id);
+
+            const LedChannel=document.getElementById(id);
+
+            const dutySlider=LedChannel.getElementsByClassName("duty_slider")[0];
+
+             updateDuty(id,Number.parseFloat(dutySlider.value)+Number.parseFloat(value));
+
+        });
+    }
+
+     function updateActiveFreq(value)
+    {
+        const main=document.getElementsByTagName("main")[0];
+
+        const active=[...main.getElementsByClassName("active")];
+
+         active.forEach( element => {
+            const id=Number.parseInt(element.id);
+
+            const LedChannel=document.getElementById(id);
+
+            const freqSlider=LedChannel.getElementsByClassName("freq_slider")[0];
+            
+            updateFreq(id,Number.parseFloat(freqSlider.value)+Number.parseFloat(value));
+
+        });
+    }
+
+    function startUp()
+    {
+        const main=document.getElementsByTagName("main")[0];
+
+        for(let i=0;i<13;i++)
+        {
+            main.innerHTML+=`
+            <div id="${i}" class="led_control" onclick="onLedClick(this)">
+            <p>Channel: ${i}</p>
+            <label class="duty_value">Brightness:</label><input class="duty_slider" type="range" min="0.0" max="100.0" value="50.0" step="0.1" oninput="updateDuty(${i},this.value)">
+            <label class="freq_value">Frequency:</label><input class="freq_slider" type="range" min="0.0" max="2000.0" value="0.0" step="0.1" oninput="updateFreq(${i},this.value)">
+            </div>
+            `;
+            
+        }
+
+        updateAllDuty(50.0);
+        updateAllFreq(0.0);
+    }
+
+     function toggleActive(item_id)
+    {
+        const main_items=document.getElementsByTagName("main")[0];
+        const items=main_items.getElementsByClassName("led_control");
+
+        onLedClick(items[item_id]);
+    }
+
+    function onLedClick(item)
+    {
+        
+        if(item.className.search("active")>-1)
+        {
+            item.className=item.className.replace(" active","");
+        }
+        else
+        {
+            item.className+=" active";
+        }
+    }
+
+     function updateDuty(channel,value)
+    {
+        console.log("Duty ch: "+channel+" val: "+value);
+
+        const LedChannel=document.getElementById(channel);
+
+        const dutySlider=LedChannel.getElementsByClassName("duty_slider")[0];
+
+        dutySlider.value=value;
+
+        const dutyLabel=LedChannel.getElementsByClassName("duty_value")[0];
+
+        dutyLabel.innerHTML=`Brigthness: ${dutySlider.value} %`;
+
+        LedChannel.style.opacity=`${Number.parseFloat(dutySlider.value)/100.0 + 0.1}`;
+
+        const request=new XMLHttpRequest();
+        request.open("GET",`/led/duty/?id=${channel}&value=${dutySlider.value}`,false);
+        request.send(null);
+
+        /*await fetch(`/led/duty/?id=${channel}&value=${value}`,
+        {
+            method:"GET"
+        }).then(res=>{
+            if(res.ok)
+            {
+                console.log(`Led duty channel ${channel} updated`);
+            }
+        })*/
+    }
+
+     function updateFreq(channel,value)
+    {
+        console.log("Freq ch: "+channel+" val: "+value);
+
+        const element=document.getElementById(channel);
+
+        const freqSlider=element.getElementsByClassName("freq_slider")[0];
+
+        freqSlider.value=value;
+
+        const freqLabel=element.getElementsByClassName("freq_value")[0];
+
+        freqLabel.innerHTML=`Frequency: ${freqSlider.value} Hz`;
+
+        if(Number.parseFloat(freqSlider.value)!=0.0)
+        {
+            element.style.animationDuration=`${1/Number.parseFloat(freqSlider.value)}s`;
+            element.style.animationName="blink";
+        }
+        else
+        {
+            element.style.animationName="none";
+        }
+
+        const request=new XMLHttpRequest();
+        request.open("GET",`/led/freq/?id=${channel}&value=${freqSlider.value}`,false);
+        request.send(null);
+
+        /*await fetch(`/led/freq/?id=${channel}&value=${value}`,
+        {
+            method:"GET"
+        }).then(res=>{
+            if(res.ok)
+            {
+                console.log(`Led frequency channel ${channel} updated`);
+            }
+        })*/
+    }
+
+     function updateAllDuty(value)
+    {
+        for(let i=0;i<13;i++)
+        {
+             updateDuty(i,value);
+        }
+    }
+
+     function updateAllFreq(value)
+    {
+        for(let i=0;i<13;i++)
+        {
+             updateFreq(i,value);
+        }
+    }
+
+    document.addEventListener("keydown",onKeyPress);
+
+    startUp();
+
+</script>
+</html>
+)rawliteral";

@@ -1,0 +1,162 @@
+
+*
+{
+    font-family: 'Arial' sans-serif;
+}
+
+html, body
+{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    
+}
+
+#menu
+{
+    background-image:linear-gradient(red,rgb(161, 0, 0));
+    width: 80%;
+    float: left;
+    text-align: center;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    margin-left: 10%;
+    border-bottom-left-radius:  5px;
+    border-bottom-right-radius:  5px;
+}
+
+button
+{
+    border: 3px solid white;
+    border-radius:3px;
+    background-image:linear-gradient(gray,rgb(175, 172, 172));
+    font-size: 3vw;
+    text-align: center;
+}
+
+button:hover
+{
+    background-image:linear-gradient(gray,white);
+}
+
+button:active
+{
+    color:white;
+}
+
+.menu_button
+{
+    margin-right: 3%;
+    width:25%;
+}
+
+.refresh
+{
+    float: right;
+    margin-top: 3%;
+    margin-right: 1%;
+}
+
+#password
+{
+    display:none;
+    /*display:block;*/
+    position:fixed;
+    bottom: 30%;
+    font-size: 4vw;
+    z-index: 8;
+    right: 33%;
+    background-image:linear-gradient(red,rgb(161, 0, 0));
+    border: 5px solid black;
+    width:33%;
+    
+}
+
+#password_container
+{
+    padding:10px;
+}
+/*#password_container*/ input
+{
+    width: 100%;
+    padding: 1vw 1vw;
+    box-sizing: border-box;
+    border:none;
+    border-bottom: 5px solid red;
+}
+
+
+#msg
+{
+    display:none;
+    position:fixed;
+    bottom: 50%;
+    height:2em;
+    width: 100%;
+    font-size: 6vw;
+    z-index: 9;
+    text-align: center;
+    background-image:linear-gradient(red,rgb(161, 0, 0));
+    border: 5px solid black;
+}
+
+#overview
+{
+    border: 3px solid black;
+    border-radius:5px;
+    height: 80%;
+    width: 80%;
+    float: left;
+    margin-top: 2%;
+    margin-left: 10%;
+    overflow:auto;
+    background-image:linear-gradient(white,rgb(211, 211, 211));
+    
+}
+
+.list
+{
+    border: 3px solid black;
+    border-radius: 5px;
+    float: left;
+    width: 50%;
+    margin-left: 25%;
+    margin-top:  3%;
+    height: 50%;
+    background-color: white;
+    display:flex;
+    flex-direction: column;
+    overflow:auto;
+}
+
+.wlan_connected
+{
+    background-image: linear-gradient(lightgreen,rgb(171, 240, 171));
+    
+}
+
+.wlan_connected:hover
+{
+    background-image:linear-gradient(white,rgb(211, 211, 211));
+}
+
+.list_entry
+{
+    border: 3px solid black;
+    margin-bottom: 5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    font-size: 3vw;
+    background-image:linear-gradient(white,rgb(211, 211, 211));
+}
+
+.list_entry > p
+{
+    margin: 0;
+}
+
+.wlan_entry:hover
+{
+    background-image: linear-gradient(lightgreen,rgb(171, 240, 171));
+}

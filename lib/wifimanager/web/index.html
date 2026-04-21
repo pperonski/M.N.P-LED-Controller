@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<link href="/web/style.css" rel="stylesheet">
+</head>
+<body>
+ 
+<div id="menu">
+
+    <button class="menu_button" id="connect" onclick='load_connect()'>Connect</button>
+    <button class="menu_button" id="networks" onclick='list_networks()'>Networks</button>
+    <button class="menu_button" id="parameters" onclick='load_params()'>Parameters</button>
+
+</div>
+
+
+
+<div id="overview">
+
+    Hello World!
+
+</div>
+
+<div id="msg" onclick='hide_msg(this)'>
+
+    Hello world!
+
+</div>
+
+<div id="password">
+<form name="wlan_form" method="POST" onsubmit='submit_pwd()' id="password_container">
+<label>SSID:</label> <input type="text" name="ssid" maxlength="32" required>
+<label>Password:</label> <input type="password" name="pwd" maxlength="32" required>
+<button type="submit">Connect</button>
+<button onclick='closeForm()'>Close</button>
+</form>
+</div>
+    
+</body>
+<script src="/web/script.js"></script> 
+</html>
